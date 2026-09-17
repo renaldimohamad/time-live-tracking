@@ -1,26 +1,201 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   TIME Live Tracking — Design Tokens
+   Added additively on top of the existing Tailwind v4 configuration.
+   These tokens establish the TIME enterprise visual language.
+   ─────────────────────────────────────────────────────────────────────────── */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand */
+  --time-primary: #2563EB;
+  --time-primary-hover: #1D4ED8;
+  --time-primary-light: #EFF6FF;
+
+  /* Surfaces */
+  --time-bg: #F8FAFC;
+  --time-bg-alt: #F1F5F9;
+  --time-surface: #FFFFFF;
+  --time-surface-raised: #FFFFFF;
+
+  /* Navigation */
+  --time-sidebar-bg: #0F172A;
+  --time-sidebar-hover: #1E293B;
+  --time-sidebar-active: #2563EB;
+  --time-sidebar-text: #CBD5E1;
+  --time-sidebar-text-muted: #64748B;
+  --time-header-bg: #FFFFFF;
+
+  /* Text */
+  --time-text-primary: #0F172A;
+  --time-text-secondary: #475569;
+  --time-text-muted: #94A3B8;
+  --time-text-inverse: #FFFFFF;
+
+  /* Borders */
+  --time-border: #E2E8F0;
+  --time-border-muted: #F1F5F9;
+
+  /* Semantic risk / severity */
+  --risk-critical: #EF4444;
+  --risk-critical-bg: #FEF2F2;
+  --risk-critical-border: #FECACA;
+  --risk-high: #F97316;
+  --risk-high-bg: #FFF7ED;
+  --risk-high-border: #FED7AA;
+  --risk-medium: #EAB308;
+  --risk-medium-bg: #FEFCE8;
+  --risk-medium-border: #FEF08A;
+  --risk-low: #22C55E;
+  --risk-low-bg: #F0FDF4;
+  --risk-low-border: #BBF7D0;
+  --risk-none: #94A3B8;
+  --risk-none-bg: #F8FAFC;
+  --risk-none-border: #E2E8F0;
+
+  /* Status */
+  --status-open: #EF4444;
+  --status-investigating: #F97316;
+  --status-resolved: #22C55E;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+
+  /* Typography */
+  --font-primary: var(--font-geist-sans), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Spacing / Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--time-bg);
+  --color-foreground: var(--time-text-primary);
+  --font-sans: var(--font-primary);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base reset ──────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100%;
+  background: var(--time-bg);
+  color: var(--time-text-primary);
+  font-family: var(--font-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* ─── Leaflet overrides ────────────────────────────────────────────────────── */
+
+/* Ensure leaflet popups/tooltips appear above floating panels */
+.leaflet-pane { z-index: 400; }
+.leaflet-control { z-index: 800; }
+.leaflet-top, .leaflet-bottom { z-index: 800; }
+
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--time-border) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  width: auto !important;
+}
+
+.leaflet-popup-tip-container {
+  margin-top: -1px;
+}
+
+/* Remove default Leaflet outline on focus */
+.leaflet-interactive:focus {
+  outline: none;
+}
+
+/* ─── TIME utility classes ─────────────────────────────────────────────────── */
+
+.time-card {
+  background: var(--time-surface);
+  border: 1px solid var(--time-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.time-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.time-badge-critical {
+  background: var(--risk-critical-bg);
+  color: var(--risk-critical);
+  border: 1px solid var(--risk-critical-border);
+}
+
+.time-badge-high {
+  background: var(--risk-high-bg);
+  color: var(--risk-high);
+  border: 1px solid var(--risk-high-border);
+}
+
+.time-badge-medium {
+  background: var(--risk-medium-bg);
+  color: var(--risk-medium);
+  border: 1px solid var(--risk-medium-border);
+}
+
+.time-badge-low {
+  background: var(--risk-low-bg);
+  color: var(--risk-low);
+  border: 1px solid var(--risk-low-border);
+}
+
+.time-badge-open {
+  background: var(--risk-critical-bg);
+  color: var(--status-open);
+  border: 1px solid var(--risk-critical-border);
+}
+
+.time-badge-investigating {
+  background: var(--risk-high-bg);
+  color: var(--status-investigating);
+  border: 1px solid var(--risk-high-border);
+}
+
+.time-badge-resolved {
+  background: var(--risk-low-bg);
+  color: var(--status-resolved);
+  border: 1px solid var(--risk-low-border);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--time-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #CBD5E1; }
